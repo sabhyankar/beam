@@ -33,9 +33,11 @@ import org.apache.beam.sdk.values.TypeDescriptor;
 public class PubsubMessageWithAttributesCoder extends CustomCoder<PubsubMessage> {
   // A message's payload can not be null
   private static final Coder<byte[]> PAYLOAD_CODER = ByteArrayCoder.of();
-  // A message's attributes can be null.
+  // A message's attributes can be null
+  // or the attribute values can be null.
   private static final Coder<Map<String, String>> ATTRIBUTES_CODER =
-      NullableCoder.of(MapCoder.of(StringUtf8Coder.of(), StringUtf8Coder.of()));
+      NullableCoder.of(MapCoder.of(StringUtf8Coder.of(),
+              NullableCoder.of(StringUtf8Coder.of())));
 
   public static Coder<PubsubMessage> of(TypeDescriptor<PubsubMessage> ignored) {
     return of();
